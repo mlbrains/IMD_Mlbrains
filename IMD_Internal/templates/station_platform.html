@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</head>
+<body>
+    <h2 class="my-2" style="text-align: center; box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1); padding-bottom: 10px;"><b>Station platform</b></h2>
+    <div class="container-fluid" style="width: 50%; margin-top: 1%;">
+        <form style="margin-top: 4%;">
+            <div class="form-group">
+                <label for="Region"> 3-01 Region of origin of data </label>
+                <input type="text" class="form-control" id="Region" aria-describedby="emailHelp">
+            </div>
+            <div class="form-group">
+                <label for="Territory"> 3-02 Territory of origin of data </label>
+                <input type="text" class="form-control" id="Territory">
+            </div>
+            <div class="form-group">
+                <label for="Stationname"> 3-03 Station/platform name *</label>
+                <input type="text" class="form-control" id="Stationname">
+            </div>
+            <div class="form-group">
+                <label for="Stationtype"> 3-04 Station/platform type *</label>
+                <input type="text" class="form-control" id="Stationtype">
+            </div>
+            <div class="form-group">
+                <label for="Stationidentifier"> 3-06 Station/platform unique identifier *</label>
+                <input type="text" class="form-control" id="Stationidentifier">
+            </div>
+            <div class="form-group">
+                <label for="Geospatial"> 3-07 Geospatial location *</label>
+                <input type="text" class="form-control" id="Geospatial">
+            </div>
+            <div class="form-group">
+                <label for="Data"> 3-08 Data communication method</label>
+                <input type="text" class="form-control" id="Data">
+            </div>
+            <div class="form-group">
+                <label for="Stationstatus"> 3-09 Station operating status *</label>
+                <input type="text" class="form-control" id="Stationstatus">
+            </div>
+            <div class="form-group">
+                <label for="cluster"> 3-10 Station/platform cluster</label>
+                <input type="text" class="form-control" id="cluster">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</body>
+</html>

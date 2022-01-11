@@ -1,0 +1,164 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IMD</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="{% static 'home.css' %}">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="{% static 'homejs.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg" style="box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1); background-color: #004e99;">
+        <h4 class="navbar-brand logos"><a href="/"><img class="logoimg" style="width: 5vmax; margin-left: 50px;" src="{% static '/logo-india-big.png' %}"></a></h4>
+        <button class="navbar-toggler ml-auto hidden-sm-up float-xs-right" type="button" data-toggle="collapse" data-target="#collapsibleNavbar" aria-controls="collapsibleNavbar" aria-expanded="false" aria-label="Toggle navigation" target="#collapsibleNavbar">
+            <span class="navbar-toggler-icon">
+                <i class="fa fa-bars fa-2x" aria-hidden="true"></i>
+            </span>
+        </button>
+        <div class="collapse navbar-collapse" id="collapsibleNavbar" style="margin-right: 100px;">
+            <ul class="navbar-nav" style="margin: 0 auto;">
+              <li class="nav-item"><h1 style="color: wheat;">Station Metadata</h1></li>
+            </ul>
+        </div>
+    </nav>
+    <h4 class="my-2" style="text-align: center; box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1); padding-bottom: 10px;"><b>Observed Variable</b></h4>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-6">
+                <form style="margin-top: 4%;">
+                    <div class="form-row">
+                        <div class="form-group col-md-10 ">
+                            <label for="Observedvariable"> 1-01 Observed variable – measured *</label>
+                            <select class="form-control" id="Observedvariable" onchange="updateLevel()">
+                                <option>Rainfall (aggregation)</option>
+                                <option>Atmostpheric Pressure (calculate QFE and QFH)</option>
+                                <option>Surface Wind Speed (Max (Gust))</option>
+                                <option>Surface Wind Direction (Reported as it is)</option>
+                                <option>Maximum Temperature (Average)</option>
+                                <option>Minimum Temperature (Average)</option>
+                                <option>Dew Point (pre-calculated / software reported)</option>
+                                <option>Relative Humidity (Morning / Evening)</option>
+                                <option>QFE (Derived)</option>
+                                <option>QFH (Derived)</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-2 ">
+                            <label for="unit">unit</label>
+                            <input type="text" class="form-control" id="unit" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="Temporalextent"> 1-03 Temporal extent *</label>
+                        <select class="form-control" id="Observedvariable">
+                            <option>Per second</option>
+                            <option>Per minute</option>
+                            <option>Per 15 min</option>
+                            <option>Per 30 min</option>
+                            <option>Per 60 min</option>
+                            <option>Per 2 hours</option>
+                            <option>Per 3 hours</option>
+                            <option>Per 4 hours</option>
+                            <option>Per 6 hours</option>
+                            <option>Per 8 hours</option>
+                            <option>Per 12 hours</option>
+                            <option>Per 24 hours</option>
+                            <option>Per 48 hours</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="Spatialextent"> 1-04 Spatial extent *</label>
+                        <select class="form-control" id="Spatialextent">
+                            <option>0 dimensional - Pin location for AWS</option>
+                            <option>2 dimensional - Multiple location of AWS stations in the vicinity or any area around the AWS stations ...</option>
+                            <option>3 dimensional - DEM maps with Ground Control points (GCP)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="Representativeness"> 1-05 Representativeness</label>
+                        <input type="text" class="form-control" id="Representativeness">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+            <div class="col-sm-6">
+                <canvas id="myChart" style="width:100%;max-width:600px; margin-top: 60px;"></canvas>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script>
+    var xValues = [50,60,70,80,90,100,110,120,130,140,150];
+    var yValues = [7,8,8,9,9,9,10,11,14,14,15];
+    
+    new Chart("myChart", {
+      type: "line",
+      data: {
+        labels: xValues,
+        datasets: [{
+          fill: false,
+          lineTension: 0,
+          backgroundColor: "rgba(0,0,255,1.0)",
+          borderColor: "rgba(0,0,255,0.1)",
+          data: yValues
+        }]
+      },
+      options: {
+        legend: {display: false},
+        scales: {
+          yAxes: [{ticks: {min: 6, max:16}}],
+        }
+      }
+    });
+</script>
+<script>
+    function updateLevel(){
+        var level;
+        if(document.getElementById("Observedvariable").value == "Rainfall (aggregation)"){
+            level = "mm/hour";
+        }
+        else if(document.getElementById("Observedvariable").value == "Atmostpheric Pressure (calculate QFE and QFH)"){
+            level = "mb/hPa";
+        }
+        else if(document.getElementById("Observedvariable").value == "Surface Wind Speed (Max (Gust))"){
+            level = "m/s or kmph";
+        }
+        else if(document.getElementById("Observedvariable").value == "Surface Wind Direction (Reported as it is)"){
+            level = "SE";
+        }
+        else if(document.getElementById("Observedvariable").value == "Dew Point (pre-calculated / software reported)"){
+            level = "C";
+        }
+        else if(document.getElementById("Observedvariable").value == "Maximum Temperature (Average)"){
+            level = "C";
+        }
+        else if(document.getElementById("Observedvariable").value == "Minimum Temperature (Average)"){
+            level = "C";
+        }
+        else if(document.getElementById("Observedvariable").value == "Dew Point (pre-calculated / software reported)"){
+            level = "F";
+        }
+        else if(document.getElementById("Observedvariable").value == "Relative Humidity (Morning / Evening)"){
+            level = "%";
+        }
+        else if(document.getElementById("Observedvariable").value == "QFE (Derived)"){
+            level = "mBar";
+        }
+        else if(document.getElementById("Observedvariable").value == "QFH (Derived)"){
+            level = "mBar";
+        }
+        else{
+            level = "";
+        }
+        document.getElementById("unit").value=level;
+        }
+updateLevel();
+</script>
+</html>
